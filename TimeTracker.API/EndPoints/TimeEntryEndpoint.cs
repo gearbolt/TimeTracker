@@ -40,7 +40,7 @@ public static class TimeEntryEndpoint
         {
             var entity = new TimeEntry
             {
-                Project = timeEntryRequest.Project,
+                Project = new Project { Name = timeEntryRequest.Project },
                 Start = timeEntryRequest.Start,
                 End = timeEntryRequest.End
             };
@@ -56,7 +56,7 @@ public static class TimeEntryEndpoint
 
             if (entity is null) return TypedResults.NotFound("TimeEntry not found with the given id");
 
-            entity.Project = timeEntryRequest.Project;
+            entity.Project = new Project { Name = timeEntryRequest.Project };
             entity.Start = timeEntryRequest.Start;
             entity.End = timeEntryRequest.End;
 
@@ -98,7 +98,7 @@ public static class TimeEntryEndpoint
         return timeEntries.Select(te => new TimeEntryResponse
         {
             Id = te.Id,
-            Project = te.Project,
+            Project = te.Project?.Name ?? string.Empty,
             Start = te.Start,
             End = te.End
         }).ToList();

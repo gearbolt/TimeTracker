@@ -5,6 +5,10 @@ class TimeEntriesSqliteDbContext : DbContext
 
     //public DbSet<TimeEntry> TimeEntry { get; set; } = null!;
     public DbSet<TimeEntry> TimeEntry => Set<TimeEntry>();
+    public DbSet<Project> Projects => Set<Project>();
+    public DbSet<ProjectDetails> ProjectDetails {get; set; }
+    public DbSet<User> Users {get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
