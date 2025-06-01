@@ -1,9 +1,9 @@
-using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using TimeTracker.API.EndPoints;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<TimeEntriesDbContext>(opt => opt.UseInMemoryDatabase("TimeEntriesDb"));
+builder.Services.AddDbContext<TimeEntriesSqliteDbContext>(opt => opt.UseSqlite("Data Source=TimeTracker.db"));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 

@@ -1,5 +1,3 @@
-using TimeTracker.Shared.Entities;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http.HttpResults;
 using System.Runtime.CompilerServices;
 
@@ -13,20 +11,23 @@ public static class TimeEntryEndpoint
         //.WithTags(nameof(TimeEntry));
         //timeentry.WithTags("TimeEntry");
         //timeentry.MapGet("/", GetAllTimeEntries);
-        timeentry.MapGet("/", GetAllTimeEntries2);        
+        timeentry.MapGet("/", GetAllTimeEntries2);
 
-        timeentry.MapGet("/populate", async (TimeEntriesDbContext db) =>
-        {
-            await db.Database.EnsureCreatedAsync();
-            await db.TimeEntry.AddRangeAsync(
-                new TimeEntry { Id = 1, Project = "Time Tracker App", End = DateTime.Now.AddHours(2) },
-                new TimeEntry { Id = 2, Project = "Date Picker App", End = DateTime.Now.AddHours(5) }
-            );
-            await db.SaveChangesAsync();
-            return TypedResults.Ok();
-        });
+        /*
+                timeentry.MapGet("/populate", async (TimeEntriesSqliteDbContext db) =>
+                {
+                    await db.Database.EnsureCreatedAsync();
+                    await db.TimeEntry.AddRangeAsync(
+                        new TimeEntry { Id = 1, Project = "Time Tracker App", End = DateTime.Now.AddHours(2) },
+                        new TimeEntry { Id = 2, Project = "Date Picker App", End = DateTime.Now.AddHours(5) }
+                    );
+                    await db.SaveChangesAsync();
+                    return TypedResults.Ok();
+                });
 
-        timeentry.MapGet("/{id}", async Task<Results<Ok<TimeEntry>, NotFound>> (int id, TimeEntriesDbContext db) =>
+        */
+
+        timeentry.MapGet("/{id}", async Task<Results<Ok<TimeEntry>, NotFound>> (int id, TimeEntriesSqliteDbContext db) =>
         {
             return await db.TimeEntry.FindAsync(id) switch
             {
@@ -35,7 +36,7 @@ public static class TimeEntryEndpoint
             };
         });
 
-        timeentry.MapPost("/", async (TimeEntryCreateRequest timeEntryRequest, TimeEntriesDbContext db) =>
+        timeentry.MapPost("/", async (TimeEntryCreateRequest timeEntryRequest, TimeEntriesSqliteDbContext db) =>
         {
             var entity = new TimeEntry
             {
@@ -49,7 +50,7 @@ public static class TimeEntryEndpoint
         });
 
 
-        timeentry.MapPut("/{id}", async (int id, TimeEntryCreateRequest timeEntryRequest, TimeEntriesDbContext db) =>
+        timeentry.MapPut("/{id}", async (int id, TimeEntryCreateRequest timeEntryRequest, TimeEntriesSqliteDbContext db) =>
         {
             var entity = await db.TimeEntry.FindAsync(id);
 
@@ -65,7 +66,7 @@ public static class TimeEntryEndpoint
         });
 
 
-        timeentry.MapDelete("/{id}", async (int id, TimeEntriesDbContext db) =>
+        timeentry.MapDelete("/{id}", async (int id, TimeEntriesSqliteDbContext db) =>
         {
             var entity = await db.TimeEntry.FindAsync(id);
 
@@ -91,7 +92,7 @@ public static class TimeEntryEndpoint
     }
     */
 
-    static async Task<List<TimeEntryResponse>> GetAllTimeEntries2(TimeEntriesDbContext db)
+    static async Task<List<TimeEntryResponse>> GetAllTimeEntries2(TimeEntriesSqliteDbContext db)
     {
         var timeEntries = await db.TimeEntry.ToListAsync();
         return timeEntries.Select(te => new TimeEntryResponse

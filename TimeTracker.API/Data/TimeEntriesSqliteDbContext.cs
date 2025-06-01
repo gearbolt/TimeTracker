@@ -1,6 +1,6 @@
-class TimeEntriesDbContext : DbContext
+class TimeEntriesSqliteDbContext : DbContext
 {
-    public TimeEntriesDbContext(DbContextOptions<TimeEntriesDbContext> options)
+    public TimeEntriesSqliteDbContext(DbContextOptions<TimeEntriesSqliteDbContext> options)
      : base(options){}
 
     //public DbSet<TimeEntry> TimeEntry { get; set; } = null!;
